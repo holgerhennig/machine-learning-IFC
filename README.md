@@ -24,11 +24,18 @@ Download Cellprofiler: http://cellprofiler.org/releases/
 For help on how to improve or tweak your pipeline, see the [CellProfiler forum](http://forum.cellprofiler.org/).  
 
 ## Step 4: Machine learning (python)
-A machine learning script in python is provided in this repository, which may server as a starting point for your high-content image data analysis and exploration. The script works with the example data below without modifications.
+A machine learning script in python is provided in this repository, which may server as a starting point for your high-content image data analysis and exploration.  
+
+To test the script: The script uses a RandomForests and NaiveBayes classifier to predict the cell cycle phase of the Jurkat cells. It also performs feature selection, i.e., ranks the most important/informative features. The results are in the machine learning output directory. To replicate the machine learning results use the FULL example data in Step3_AllData as input.
+
 
 ## Examples & Tutorial
-The examples folder contains a quick example with a small data set to test our workflow before analyzing your own data. The example data is also suitable for workshops & tutorials. The CellProfiler pipeline finishes in ~4 Minutes, and machine learning predictions in python finish almost instantly.  
-The full data set from [Hennig et al. Methods 112, 201 (2017)](http://www.sciencedirect.com/science/article/pii/S1046202316302912) with a detailed description is available on http://cellprofiler.org/imagingflowcytometry/index.html
+### CellProfiler for IFC
+The goal in our example is to predict the cell cycle phase of the Jurkat cells. The examples folder contains a quick example with a small data set, which we hope may serve to become familiar with our workflow before analyzing your own data. The example data is also suitable for workshops & tutorials. The CellProfiler pipeline finishes in ~4 Minutes. While this is a small data set suitable for tutorials and training purposes, the full data set with all montage images from [Hennig et al. Methods 112, 201 (2017)](http://www.sciencedirect.com/science/article/pii/S1046202316302912) is available on http://cellprofiler.org/imagingflowcytometry/index.html
+
+### Machine Learning for IFC
+The script Step4_machine_learning.py reads the feature data provided in Step3_AllData. The script then uses and compares a RandomForests and NaiveBayes classifier to predict the cell cycle phase of the Jurkat cells. It also performs feature selection, i.e., ranks the most important/informative features. The results are in the machine learning output directory. For this data set, machine learning takes (1) a few seconds for NaiveBayes (2) several minutes for RandomForests including feature selection on a typical laptop.  
+
 
 ## Q&A
 Q: I have an IFC experiment with several markers. However, the Blasi paper focuses on a label-free analysis method. Can I use the machine learning workflow including the marker channels?  

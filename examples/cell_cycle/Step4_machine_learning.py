@@ -105,7 +105,6 @@ names_classifiers = []
 #names_classifiers.append(('RandomForest', RandomForestClassifier()))
 names_classifiers.append(('NaiveBayes', GaussianNB()))
 
-
 for name, classifier in names_classifiers:
     #cross validation
     y_pred = sklearn.model_selection.cross_val_predict(classifier, data, ground_truth, cv=10)
@@ -122,9 +121,6 @@ for name, classifier in names_classifiers:
     cm_file.close()
     #print(normalized_cm)
     plot(name, cm_diag)
-
-
-
 
 
 #%% Feature selection ###
@@ -149,7 +145,7 @@ for name, classifier in names_classifiers:
         selected_features.append(all_features_names[i])
     
     output_file_name = name + '.txt'
-    output_file = open(output_file_name, 'w+')
+    output_file = open(os.path.join(output_directory, output_file_name), 'w+')
     output_file.write(str(selected_features))
     output_file.write("\n\n")
     output_file.write(str(normalized_cm))

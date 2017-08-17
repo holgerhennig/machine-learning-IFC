@@ -1,7 +1,0 @@
-['AreaShape_MajorAxisLength', 'AreaShape_MeanRadius', 'Intensity_MassDisplacement_BF_image', 'Intensity_MeanIntensityEdge_BF_image', 'Intensity_MeanIntensity_BF_image', 'Intensity_UpperQuartileIntensity_BF_image', 'RadialDistribution_FracAtD_BF_image_3of4', 'RadialDistribution_FracAtD_BF_image_4of4', 'RadialDistribution_MeanFrac_BF_image_3of4', 'RadialDistribution_MeanFrac_BF_image_4of4', 'RadialDistribution_RadialCV_BF_image_1of4', 'RadialDistribution_RadialCV_BF_image_2of4', 'Granularity_1_DF_image']
-
-[[ 1.     0.     0.     0.     0.   ]
- [ 0.106  0.894  0.     0.     0.   ]
- [ 0.132  0.     0.868  0.     0.   ]
- [ 0.     0.     0.     1.     0.   ]
- [ 0.     0.     0.     0.     1.   ]]

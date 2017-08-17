@@ -1,0 +1,7 @@
+['AreaShape_Area', 'AreaShape_MaximumRadius', 'Intensity_IntegratedIntensityEdge_BF_image', 'Intensity_IntegratedIntensity_BF_image', 'Intensity_MassDisplacement_BF_image', 'Intensity_MeanIntensityEdge_BF_image', 'Intensity_MeanIntensity_BF_image', 'Intensity_UpperQuartileIntensity_BF_image', 'RadialDistribution_MeanFrac_BF_image_3of4', 'RadialDistribution_MeanFrac_BF_image_4of4', 'RadialDistribution_RadialCV_BF_image_1of4', 'RadialDistribution_RadialCV_BF_image_2of4', 'Granularity_1_DF_image']
+
+[[ 1.     0.     0.     0.     0.   ]
+ [ 0.084  0.916  0.     0.     0.   ]
+ [ 0.074  0.074  0.853  0.     0.   ]
+ [ 0.     0.     0.067  0.933  0.   ]
+ [ 0.04   0.     0.     0.     0.96 ]]
