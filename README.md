@@ -1,5 +1,5 @@
 # machine-learning-IFC
-We provide a machine learning workflow for imaging flow cytometry (IFC). This is a step by step guide for the high-content analysis of IFC images with machine learning. It is based on the following articles (please cite these when using the workflow):
+We provide a machine learning workflow for imaging flow cytometry (IFC). This is a step by step guide for the high-content analysis of IFC images with machine learning. It is based on the following articles (please cite when using the workflow):
 - [Hennig et al. An open-source solution for advanced imaging flow cytometry data analysis using machine learning. Methods 112, 201 (2017)](http://www.sciencedirect.com/science/article/pii/S1046202316302912)
 - [Blasi et al. Label-free cell cycle analysis for high-throughput imaging flow cytometry. Nature Communications 7, 10256 (2016)](https://www.nature.com/articles/ncomms10256)
 
