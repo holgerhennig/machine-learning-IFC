@@ -24,7 +24,7 @@ Download Cellprofiler: http://cellprofiler.org/releases/
 For help on how to improve or tweak your pipeline, see the [CellProfiler forum](http://forum.cellprofiler.org/).  
 
 ## Step 4: Machine learning (python)
-A machine learning script in python is provided in this repository, which may server as a starting point for your high-content image data analysis and exploration.  
+A machine learning script in python is provided in this repository, which may serve as a starting point for your high-content image data analysis and exploration.  
 
 
 
