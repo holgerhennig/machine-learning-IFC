@@ -1,7 +1,5 @@
 # machine-learning-IFC
-A machine learning workflow for imaging flow cytometry (IFC).
-This is a step by step guide for the high-content analysis of images from imaging flow cytometry with machine learning.
-It is based on the following articles (please cite these when using the workflow):
+We provide a machine learning workflow for imaging flow cytometry (IFC). This is a step by step guide for the high-content analysis of images from imaging flow cytometry with machine learning. It is based on the following articles (please cite these when using the workflow):
 - [Hennig et al. An open-source solution for advanced imaging flow cytometry data analysis using machine learning. Methods 112, 201 (2017)](http://www.sciencedirect.com/science/article/pii/S1046202316302912)
 - [Blasi et al. Label-free cell cycle analysis for high-throughput imaging flow cytometry. Nature Communications 7, 10256 (2016)](https://www.nature.com/articles/ncomms10256)
 
@@ -40,6 +38,6 @@ Q: The object segmentation ("finding the cell objects") does not work well with 
 A: If you have a nuclear stain, you can adapt the pipeline accordingly (identify primary objects on the nuclei, and identify secondary objects on the cells with nuclei as guiding objects). For help on how to improve or tweak your pipeline, see the [CellProfiler forum](http://forum.cellprofiler.org/).
 
 Q: My image montages are empty (all black)  
-A: Try the following  
+A: Try the following
 - Many image viewers don't scale the image range. Open the montages in CellProfiler or [ImageJ](https://fiji.sc/)  
 - Look up in IDEAS in which channels images have been recorded, the other channels are empty and the respective montages can be discarded.  
