@@ -5,10 +5,10 @@ We provide a machine learning workflow for imaging flow cytometry (IFC). This is
 
 For our deep learning workflow, please see https://github.com/broadinstitute/deepometry
 
-## Step 1: extracting cell subpopulations in IDEAS
-Gating in IDEAS enables to define different subpuplations of cells (for example cancer cells, normal cells, treated cells). In the menu in IDEAS, choose extract subpopulation and generate a .cif file for each subpopulation. The .cif files will be processed in the next step.
+## Step 1: extracting cell subpopulations (IDEAS)
+Gating in the software IDEAS enables to define different subpuplations of cells (for example cancer cells, normal cells, treated cells). In the menu in IDEAS, choose extract subpopulation and generate a .cif file for each subpopulation. The .cif files will be processed in the next step.
 
-## Step 2: Generate image montages
+## Step 2: Generate image montages (python)
 A montage is a collection of (e.g.) 900 cells, arranged in a 30x30 grid. The montages are automatically generated from a .cif file by a [stitching script](https://github.com/CellProfiler/stitching).  
 Input: example.cif file  
 Output: For each of the max. 12 channels, montages are created.  
@@ -17,13 +17,13 @@ ch2.tif
 ...   
 ch12.tif
 
-## Step 3: Extract features with CellProfiler
+## Step 3: Extract features (CellProfiler)
 How to identify the cells in the image montages and extract hundreds of features with CellProfiler?  
 This repository contains a CellProfiler pipeline IFC_template.cppipe. Start CellProfiler, import the pipeline and drag & drop your image montages into CellProfiler. You probably need to adapt the pipeline to your image assay.   
 Download Cellprofiler: http://cellprofiler.org/releases/  
 For help on how to improve or tweak your pipeline, see the [CellProfiler forum](http://forum.cellprofiler.org/).  
 
-## Step 4: Machine learning in python
+## Step 4: Machine learning (python)
 A machine learning script in python is provided in this repository, which may server as a starting point for your high-content image data analysis and exploration. The script works with the example data below without modifications.
 
 ## Examples & Tutorial
