@@ -52,7 +52,16 @@ exclude_featuresDF.extend(list(range(70,77)))
 brightfield.drop(brightfield.columns[exclude_featuresBF],axis=1,inplace=True)
 darkfield.drop(darkfield.columns[exclude_featuresDF],axis=1,inplace=True)
 
-#build ground truth
+# build ground truth
+# img# | class# | phase
+#  1		    4	     ana	
+# 2-65		  1	     G1
+# 66-104	  1	     G2
+# 105		  3     	meta
+# 106-108  2	     pro
+# 109-147  1       S
+# 148	   	5	     telo
+
 ground_truth_list = [4] * 225
 ground_truth_list.extend([1] * (103 * 225))
 ground_truth_list.extend([3] * 225)
