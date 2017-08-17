@@ -6,7 +6,7 @@ We provide a machine learning workflow for imaging flow cytometry (IFC). This is
 For our deep learning workflow, please see https://github.com/broadinstitute/deepometry
 
 ## Step 1: extracting cell subpopulations in IDEAS
-Gating in IDEAS enables to define different subpuplations of cells (for example cancer cells, normal cells, treated cells). In the menu in IDEAS, choose extract subpopulation and generate a .cif file for each subpopulation. The cif files will be processed in the next step.
+Gating in IDEAS enables to define different subpuplations of cells (for example cancer cells, normal cells, treated cells). In the menu in IDEAS, choose extract subpopulation and generate a .cif file for each subpopulation. The .cif files will be processed in the next step.
 
 ## Step 2: Generate image montages
 A montage is a collection of (e.g.) 900 cells, arranged in a 30x30 grid. The montages are automatically generated from a .cif file by a [stitching script](https://github.com/CellProfiler/stitching).  
