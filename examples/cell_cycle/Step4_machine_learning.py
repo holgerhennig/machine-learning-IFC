@@ -20,7 +20,7 @@ from collections import Counter
 import matplotlib
 import matplotlib.pyplot as plt
 
-working_directory = '/Users/holgerh/Dropbox/holger/work/github_repositories/machine-learning-IFC/examples/cell_cycle'
+working_directory = '/Users/holgerh/Dropbox/holger/work/Academia/presenting/dissemination_workshops/machine-learning-IFC_tutorial/examples/cell_cycle'
 os.chdir(working_directory)
 input_directory = "Step3_AllData/"
 output_directory = "Step4_ML_output/"
