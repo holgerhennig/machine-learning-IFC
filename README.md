@@ -47,7 +47,7 @@ This is an example for step 4 of the workflow. The machine learning python scrip
 
 ## FAQ
 Q: I have an IFC experiment with several fluorescent markers. However, the Blasi paper focuses on a label-free analysis method (i.e., without any markers). Can I use the machine learning workflow including the marker channels and analyze correlations/colocalization between the channels?  
-A: Yes, there is already one marker image defined in the CellProfiler pipeline, simply add further marker images in the measurement modules in CellProfiler. For colocalization assays, there is an example pipeline on the [CellProfiler website](http://cellprofiler.org/examples/), or post your question to the [CellProfiler forum](http://forum.cellprofiler.org/).
+A: Yes, there is already one marker image defined in the CellProfiler pipeline, simply add further marker images in the measurement modules in CellProfiler. For colocalization assays, there is an example pipeline on the [CellProfiler website](http://cellprofiler.org/examples/), or post your question on the [CellProfiler forum](http://forum.cellprofiler.org/).
 
 Q: The object segmentation ("finding the cell objects") does not work well with my pipeline.  
 A: If you have a nuclear stain, you can adapt the pipeline accordingly (identify primary objects on the nuclei, and identify secondary objects on the cells with nuclei as guiding objects). For help on how to improve or tweak your pipeline, see the [CellProfiler forum](http://forum.cellprofiler.org/).
