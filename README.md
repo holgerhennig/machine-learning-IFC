@@ -31,7 +31,7 @@ A machine learning script in python is provided in this repository, which may se
 
 ## Examples & Tutorial
 ### CellProfiler for IFC
-The goal in our example is to predict the cell cycle phase of the Jurkat cells. The examples folder contains a quick example with a small data set, which we hope may serve to become familiar with our workflow before analyzing your own data. The example data is also suitable for workshops & tutorials. The CellProfiler pipeline finishes in ~4 Minutes on a typical 4 core laptop. 
+This is an example of step 3 of the workflow. The goal in our example is to predict the cell cycle phase of the Jurkat cells. The examples folder contains a quick example with a small data set, which we hope may serve to become familiar with our workflow before analyzing your own data. The example data is also suitable for workshops & tutorials. The CellProfiler pipeline finishes in ~4 Minutes on a typical 4 core laptop. 
 1. Download the files from this repository
 2. Install [CellProfiler](http://cellprofiler.org/)
 3. Open the file Step3_CellProfiler.cppipe in CellProfiler. Drag & drop the folder Step2_output_tiled_tifs into CellProfiler
@@ -40,7 +40,7 @@ The goal in our example is to predict the cell cycle phase of the Jurkat cells. 
 While this is a small data set suitable for tutorials and training purposes, the full data set with all montage images from [Hennig et al. Methods 112, 201 (2017)](http://www.sciencedirect.com/science/article/pii/S1046202316302912) is available on http://cellprofiler.org/imagingflowcytometry/index.html
 
 ### Machine Learning for IFC
-The machine learning python script Step4_machine_learning.py reads the output data exported from CellProfiler. In this example, we will load all measurements taken from ca. 33.000 Jurkat cells stored in the .txt files in the folder Step3_AllData into python. The script then uses and compares a RandomForests and NaiveBayes classifier to predict the cell cycle phase of the Jurkat cells. It also performs feature selection, i.e., ranks the most important/informative features. The results are written to the machine learning output directory. For this data set, machine learning takes (1) a few seconds for NaiveBayes (2) several minutes for RandomForests including feature selection on a typical laptop.  
+This is an example for step 4 of the workflow. The machine learning python script Step4_machine_learning.py reads the output data exported from CellProfiler. In this example, we will load all measurements taken from ca. 33.000 Jurkat cells stored in the .txt files in the folder Step3_AllData into python. The script then uses and compares a RandomForests and NaiveBayes classifier to predict the cell cycle phase of the Jurkat cells. It also performs feature selection, i.e., ranks the most important/informative features. The results are written to the machine learning output directory. For this data set, machine learning takes (1) a few seconds for NaiveBayes (2) several minutes for RandomForests including feature selection on a typical laptop.  
 1. Open the file Step4_machine_learning.py in python (install required python packages first)
 2. Adjust the working directory
 3. Run the script
