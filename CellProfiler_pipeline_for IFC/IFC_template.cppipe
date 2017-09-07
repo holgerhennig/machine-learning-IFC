@@ -2,7 +2,7 @@ CellProfiler Pipeline: http://www.cellprofiler.org
 Version:3
 DateRevision:20160418141927
 GitHash:9969f42
-ModuleCount:37
+ModuleCount:38
 HasImagePlaneDetails:False
 
 Images:[module_num:1|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\'To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
@@ -97,13 +97,13 @@ IdentifyObjectsInGrid:[module_num:6|svn_version:\'Unknown\'|variable_revision_nu
     Retain outlines of the identified objects?:Yes
     Name the outline image:GridOutlines
 
-MeasureObjectIntensity:[module_num:7|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:7|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\'Preliminary measurement of intensity in each tile, to be used in next step\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:1
     Select an image to measure:DF_image
     Select objects to measure:Tile_of_grid
 
-FilterObjects:[module_num:8|svn_version:\'Unknown\'|variable_revision_number:7|show_window:False|notes:\x5B\'Exclude empty tiles\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
-    Name the output objects:Filtered_tile
+FilterObjects:[module_num:8|svn_version:\'Unknown\'|variable_revision_number:7|show_window:True|notes:\x5B\'Exclude empty tiles\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Name the output objects:Filtered_tiles
     Select the object to filter:Tile_of_grid
     Select the filtering mode:Measurements
     Select the filtering method:Limits
@@ -122,8 +122,16 @@ FilterObjects:[module_num:8|svn_version:\'Unknown\'|variable_revision_number:7|s
     Filter using a maximum measurement value?:Yes
     Maximum value:1.0
 
-Smooth:[module_num:9|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\'Filling holes\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+MaskImage:[module_num:9|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:BF_image
+    Name the output image:MaskBF
+    Use objects or an image as a mask?:Objects
+    Select object for mask:Filtered_tiles
+    Select image for mask:None
+    Invert the mask?:No
+
+Smooth:[module_num:10|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\'In this pipeline, the primary objects are identified base on their bright-field illumination. To avoid incomplete segmentation of such illumination signal, this module will fill the partial segmented objects (holes)\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:MaskBF
     Name the output image:SmoothedBF
     Select smoothing method:Gaussian Filter
     Calculate artifact diameter automatically?:No
@@ -131,7 +139,7 @@ Smooth:[module_num:9|svn_version:\'Unknown\'|variable_revision_number:2|show_win
     Edge intensity difference:0.1
     Clip intensities to 0 and 1?:Yes
 
-EnhanceEdges:[module_num:10|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+EnhanceEdges:[module_num:11|svn_version:\'Unknown\'|variable_revision_number:2|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:SmoothedBF
     Name the output image:EdgedImage
     Automatically calculate the threshold?:No
@@ -144,7 +152,7 @@ EnhanceEdges:[module_num:10|svn_version:\'Unknown\'|variable_revision_number:2|s
     Calculate value for low threshold automatically?:No
     Low threshold value:0.1
 
-ApplyThreshold:[module_num:11|svn_version:\'Unknown\'|variable_revision_number:7|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+ApplyThreshold:[module_num:12|svn_version:\'Unknown\'|variable_revision_number:7|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:EdgedImage
     Name the output image:Threshbf
     Select the output image type:Binary (black and white)
@@ -175,7 +183,7 @@ ApplyThreshold:[module_num:11|svn_version:\'Unknown\'|variable_revision_number:7
     Variance method:Standard deviation
     # of deviations:2.0
 
-Morph:[module_num:12|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+Morph:[module_num:13|svn_version:\'Unknown\'|variable_revision_number:4|show_window:True|notes:\x5B\'In this pipeline, the primary objects are identified base on their bright-field illumination. To avoid incomplete segmentation of such illumination signal, this module will further close the partial segmented objects (holes)\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Threshbf
     Name the output image:MorphBf
     Select the operation to perform:close
@@ -191,15 +199,15 @@ Morph:[module_num:12|svn_version:\'Unknown\'|variable_revision_number:4|show_win
     Custom:5,5,1111111111111111111111111
     Rescale values from 0 to 1?:Yes
 
-IdentifyPrimaryObjects:[module_num:13|svn_version:\'Unknown\'|variable_revision_number:10|show_window:True|notes:\x5B\'Either Threshbf or Morphbf image works. Depends on background\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+IdentifyPrimaryObjects:[module_num:14|svn_version:\'Unknown\'|variable_revision_number:10|show_window:True|notes:\x5B\'Identify objects based on their bright field illumination. Either Threshbf or Morphbf image works, depends on background.\', \'Be extra CAREFUL with declumping method \\xe2\\x80\\x9cShape\\xe2\\x80\\x9d. In imaging flow cytometry scenario, the cellular objects are most likely round. Thus declumping by \\xe2\\x80\\x9cShape\\xe2\\x80\\x9d would help. However in case the cells would be more likely elongated, e.g. fission yeasts or bacteria, do NOT use this method.\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:BF_image
     Name the primary objects to be identified:bf1
     Typical diameter of objects, in pixel units (Min,Max):10,45
     Discard objects outside the diameter range?:Yes
     Try to merge too small objects with nearby larger objects?:No
     Discard objects touching the border of the image?:Yes
-    Method to distinguish clumped objects:None
-    Method to draw dividing lines between clumped objects:Intensity
+    Method to distinguish clumped objects:Shape
+    Method to draw dividing lines between clumped objects:Shape
     Size of smoothing filter:10
     Suppress local maxima that are closer than this minimum allowed distance:7.0
     Speed up by using lower-resolution image to find local maxima?:Yes
@@ -238,11 +246,11 @@ IdentifyPrimaryObjects:[module_num:13|svn_version:\'Unknown\'|variable_revision_
     Variance method:Standard deviation
     # of deviations:2.0
 
-MeasureObjectSizeShape:[module_num:14|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectSizeShape:[module_num:15|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Select objects to measure:bf1
     Calculate the Zernike features?:No
 
-FilterObjects:[module_num:15|svn_version:\'Unknown\'|variable_revision_number:7|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:16|svn_version:\'Unknown\'|variable_revision_number:7|show_window:True|notes:\x5B\'Remove non-cell small debris\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Name the output objects:FilteredBF
     Select the object to filter:bf1
     Select the filtering mode:Measurements
@@ -259,15 +267,15 @@ FilterObjects:[module_num:15|svn_version:\'Unknown\'|variable_revision_number:7|
     Select the measurement to filter by:AreaShape_FormFactor
     Filter using a minimum measurement value?:Yes
     Minimum value:0.2
-    Filter using a maximum measurement value?:Yes
+    Filter using a maximum measurement value?:No
     Maximum value:1.0
 
-MeasureObjectSizeShape:[module_num:16|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectSizeShape:[module_num:17|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Select objects to measure:FilteredBF
     Calculate the Zernike features?:Yes
 
-ExpandOrShrinkObjects:[module_num:17|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\'This trick helps a lot! So no parent thinks the child of a neighbor is his/her!\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input objects:Filtered_tile
+ExpandOrShrinkObjects:[module_num:18|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\'This module helps to limit a territory of each tile. So that, at the later step, each tile will be associate to only the smaller objects included within this region, not to relate to neighbor\\xe2\\x80\\x99s objects by mistake.\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:Filtered_tiles
     Name the output objects:Non_empty_tile
     Select the operation:Shrink objects by a specified number of pixels
     Number of pixels by which to expand or shrink:1
@@ -275,7 +283,7 @@ ExpandOrShrinkObjects:[module_num:17|svn_version:\'Unknown\'|variable_revision_n
     Retain the outlines of the identified objects?:No
     Name the outline image:ShrunkenNucleiOutlines
 
-RelateObjects:[module_num:18|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:19|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\'Associate the objects with its parental tile\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Select the input child objects:FilteredBF
     Select the input parent objects:Non_empty_tile
     Calculate child-parent distances?:None
@@ -283,7 +291,7 @@ RelateObjects:[module_num:18|svn_version:\'Unknown\'|variable_revision_number:2|
     Calculate distances to other parents?:No
     Parent name:None
 
-FilterObjects:[module_num:19|svn_version:\'Unknown\'|variable_revision_number:7|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:20|svn_version:\'Unknown\'|variable_revision_number:7|show_window:True|notes:\x5B\'Keep only the biggest object in each tile, which are most likely a true cell\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Name the output objects:BF_cells_on_grid_pre
     Select the object to filter:FilteredBF
     Select the filtering mode:Measurements
@@ -303,7 +311,7 @@ FilterObjects:[module_num:19|svn_version:\'Unknown\'|variable_revision_number:7|
     Filter using a maximum measurement value?:Yes
     Maximum value:1.0
 
-IdentifyObjectsInGrid:[module_num:20|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+IdentifyObjectsInGrid:[module_num:21|svn_version:\'Unknown\'|variable_revision_number:2|show_window:True|notes:\x5B\'Assure each cell in the tile will be fully segmented\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Select the defined grid:Grid
     Name the objects to be identified:BF_cells_on_grid
     Select object shapes and locations:Natural Shape and Location
@@ -311,9 +319,9 @@ IdentifyObjectsInGrid:[module_num:20|svn_version:\'Unknown\'|variable_revision_n
     Circle diameter:20
     Select the guiding objects:BF_cells_on_grid_pre
     Retain outlines of the identified objects?:Yes
-    Name the outline image:GridOutlines
+    Name the outline image:BF_cells_on_grid_Outlines
 
-ExpandOrShrinkObjects:[module_num:21|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\'The expanded BF objects are used for side scatter channel (SSC) measurements (also called DarkField). \'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+ExpandOrShrinkObjects:[module_num:22|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\'The expanded BF objects are used for side scatter channel (SSC) measurements (also called DarkField). \'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:BF_cells_on_grid
     Name the output objects:SSC
     Select the operation:Expand objects by a specified number of pixels
@@ -322,19 +330,19 @@ ExpandOrShrinkObjects:[module_num:21|svn_version:\'Unknown\'|variable_revision_n
     Retain the outlines of the identified objects?:No
     Name the outline image:ShrunkenNucleiOutlines
 
-OverlayOutlines:[module_num:22|svn_version:\'Unknown\'|variable_revision_number:3|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+OverlayOutlines:[module_num:23|svn_version:\'Unknown\'|variable_revision_number:3|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Display outlines on a blank image?:No
     Select image on which to display outlines:BF_image
     Name the output image:OrigOverlay
     Outline display mode:Color
     Select method to determine brightness of outlines:Max of image
     Width of outlines:1
-    Select outlines to display:GridOutlines
+    Select outlines to display:BF_cells_on_grid_Outlines
     Select outline color:Red
     Load outlines from an image or objects?:Image
     Select objects to display:None
 
-MeasureGranularity:[module_num:23|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\'This pipeline is an example for measuring features in BF, DF and one additional marker channel. If you have more marker channels, then add another image (that you have defined in NamesAndTypes) in this module\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:True]
+MeasureGranularity:[module_num:24|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\'This pipeline is an example for measuring features in BF, DF and one additional marker channel. If you have more marker channels, then add another image (that you have defined in NamesAndTypes) in this module\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:True]
     Image count:2
     Object count:1
     Select an image to measure:BF_image
@@ -350,7 +358,7 @@ MeasureGranularity:[module_num:23|svn_version:\'Unknown\'|variable_revision_numb
     Radius of structuring element:10
     Range of the granular spectrum:5
 
-MeasureTexture:[module_num:24|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\'This pipeline is an example for measuring features in BF, DF and one additional marker channel. If you have more marker channels, then add another image (that you have defined in NamesAndTypes) in this module\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+MeasureTexture:[module_num:25|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\'This pipeline is an example for measuring features in BF, DF and one additional marker channel. If you have more marker channels, then add another image (that you have defined in NamesAndTypes) in this module\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:2
     Hidden:1
     Hidden:1
@@ -363,13 +371,13 @@ MeasureTexture:[module_num:24|svn_version:\'Unknown\'|variable_revision_number:4
     Number of angles to compute for Gabor:4
     Measure images or objects?:Both
 
-MeasureObjectIntensity:[module_num:25|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\'This pipeline is an example for measuring features in BF, DF and one additional marker channel. If you have more marker channels, then add another image (that you have defined in NamesAndTypes) in this module\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:26|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\'This pipeline is an example for measuring features in BF, DF and one additional marker channel. If you have more marker channels, then add another image (that you have defined in NamesAndTypes) in this module\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:2
     Select an image to measure:BF_image
     Select an image to measure:Marker_image
     Select objects to measure:BF_cells_on_grid
 
-MeasureObjectIntensityDistribution:[module_num:26|svn_version:\'Unknown\'|variable_revision_number:5|show_window:False|notes:\x5B\'This pipeline is an example for measuring features in BF, DF and one additional marker channel. If you have more marker channels, then add another image (that you have defined in NamesAndTypes) in this module\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensityDistribution:[module_num:27|svn_version:\'Unknown\'|variable_revision_number:5|show_window:False|notes:\x5B\'This pipeline is an example for measuring features in BF, DF and one additional marker channel. If you have more marker channels, then add another image (that you have defined in NamesAndTypes) in this module\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:2
     Hidden:1
     Hidden:1
@@ -385,11 +393,11 @@ MeasureObjectIntensityDistribution:[module_num:26|svn_version:\'Unknown\'|variab
     Number of bins:4
     Maximum radius:100
 
-MeasureObjectSizeShape:[module_num:27|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectSizeShape:[module_num:28|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Select objects to measure:BF_cells_on_grid
     Calculate the Zernike features?:Yes
 
-MeasureGranularity:[module_num:28|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\'DF measurements\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:True]
+MeasureGranularity:[module_num:29|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\'DF measurements\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:True]
     Image count:1
     Object count:1
     Select an image to measure:DF_image
@@ -399,7 +407,7 @@ MeasureGranularity:[module_num:28|svn_version:\'Unknown\'|variable_revision_numb
     Range of the granular spectrum:5
     Select objects to measure:SSC
 
-MeasureTexture:[module_num:29|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\'DF measurements\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+MeasureTexture:[module_num:30|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\'DF measurements\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:1
     Hidden:1
     Hidden:1
@@ -411,12 +419,12 @@ MeasureTexture:[module_num:29|svn_version:\'Unknown\'|variable_revision_number:4
     Number of angles to compute for Gabor:4
     Measure images or objects?:Both
 
-MeasureObjectIntensity:[module_num:30|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\'DF measurements\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:31|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\'DF measurements\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:1
     Select an image to measure:DF_image
     Select objects to measure:SSC
 
-MeasureObjectIntensityDistribution:[module_num:31|svn_version:\'Unknown\'|variable_revision_number:5|show_window:False|notes:\x5B\'DF measurements\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensityDistribution:[module_num:32|svn_version:\'Unknown\'|variable_revision_number:5|show_window:False|notes:\x5B\'DF measurements\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:1
     Hidden:1
     Hidden:1
@@ -431,7 +439,7 @@ MeasureObjectIntensityDistribution:[module_num:31|svn_version:\'Unknown\'|variab
     Number of bins:4
     Maximum radius:100
 
-IdentifyPrimaryObjects:[module_num:32|svn_version:\'Unknown\'|variable_revision_number:10|show_window:False|notes:\x5B\'This is optional (In case you have a PI stain or other nuclear marker)\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:False|wants_pause:False]
+IdentifyPrimaryObjects:[module_num:33|svn_version:\'Unknown\'|variable_revision_number:10|show_window:False|notes:\x5B\'This is optional (In case you have a PI stain or other nuclear marker)\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:False|wants_pause:False]
     Select the input image:PI_image
     Name the primary objects to be identified:Nuclei_pre
     Typical diameter of objects, in pixel units (Min,Max):10,35
@@ -478,7 +486,7 @@ IdentifyPrimaryObjects:[module_num:32|svn_version:\'Unknown\'|variable_revision_
     Variance method:Standard deviation
     # of deviations:2.0
 
-IdentifyObjectsInGrid:[module_num:33|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\'This is optional (In case you have a PI stain or other nuclear marker)\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:False|wants_pause:False]
+IdentifyObjectsInGrid:[module_num:34|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\'This is optional (In case you have a PI stain or other nuclear marker)\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:False|wants_pause:False]
     Select the defined grid:Grid
     Name the objects to be identified:Nuclei
     Select object shapes and locations:Natural Shape and Location
@@ -488,7 +496,7 @@ IdentifyObjectsInGrid:[module_num:33|svn_version:\'Unknown\'|variable_revision_n
     Retain outlines of the identified objects?:Yes
     Name the outline image:Nuclei_GridOutlines
 
-OverlayOutlines:[module_num:34|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\'This is optional (In case you have a PI stain or other nuclear marker)\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:False|wants_pause:False]
+OverlayOutlines:[module_num:35|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\'This is optional (In case you have a PI stain or other nuclear marker)\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:False|wants_pause:False]
     Display outlines on a blank image?:No
     Select image on which to display outlines:PI_image
     Name the output image:OrigOverlay
@@ -500,12 +508,12 @@ OverlayOutlines:[module_num:34|svn_version:\'Unknown\'|variable_revision_number:
     Load outlines from an image or objects?:Image
     Select objects to display:None
 
-MeasureObjectIntensity:[module_num:35|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\'This is optional (In case you have a PI stain or other nuclear marker)\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:False|wants_pause:False]
+MeasureObjectIntensity:[module_num:36|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\'This is optional (In case you have a PI stain or other nuclear marker)\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:False|wants_pause:False]
     Hidden:1
     Select an image to measure:PI_image
     Select objects to measure:Nuclei
 
-ExportToSpreadsheet:[module_num:36|svn_version:\'Unknown\'|variable_revision_number:11|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+ExportToSpreadsheet:[module_num:37|svn_version:\'Unknown\'|variable_revision_number:11|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Select the column delimiter:Tab
     Add image metadata columns to your object data file?:No
     Limit output to a size that is allowed in Excel?:No
@@ -529,7 +537,7 @@ ExportToSpreadsheet:[module_num:36|svn_version:\'Unknown\'|variable_revision_num
     File name:DATA.csv
     Use the object name for the file name?:Yes
 
-ExportToDatabase:[module_num:37|svn_version:\'Unknown\'|variable_revision_number:27|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+ExportToDatabase:[module_num:38|svn_version:\'Unknown\'|variable_revision_number:27|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Database type:SQLite
     Database name:DefaultDB
     Add a prefix to table names?:Yes
