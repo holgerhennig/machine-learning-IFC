@@ -89,6 +89,9 @@ all_features_names =list(data.columns.values)
 selector = VarianceThreshold() #.8 * (1 - .8) 
 data = selector.fit_transform(data)
 
+# feature scaling (normalize features to mean 0 and std 1, i.e. Z-score normalization)
+data = preprocessing.scale(data, axis=0)
+
 #remove highly correlated features
 #skip this for now
 
