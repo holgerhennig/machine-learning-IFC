@@ -7,17 +7,10 @@ import numpy as np
 import os
 import pandas
 import sklearn
-import sys
 from sklearn.naive_bayes import GaussianNB
-from sklearn import model_selection
 from sklearn.metrics import confusion_matrix
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
-from sklearn.ensemble import AdaBoostClassifier
 from sklearn.feature_selection import VarianceThreshold
-from sklearn.feature_selection import RFECV
-from operator import itemgetter
-from collections import Counter
-import matplotlib
 import matplotlib.pyplot as plt
 
 working_directory = '/Users/holgerh/Dropbox/holger/work/Academia/presenting/dissemination_workshops/machine-learning-IFC_tutorial/examples/cell_cycle'
@@ -70,7 +63,6 @@ ground_truth_list.extend([1] * (39*225))
 ground_truth_list.extend([5] * 225)
 
 ground_truth = pandas.DataFrame({'ground_truth': ground_truth_list})
-
 
 #combine bf and df
 data = pandas.concat([brightfield, darkfield, ground_truth], axis=1)
