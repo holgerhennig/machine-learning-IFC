@@ -3,7 +3,7 @@ machine learning for cell cycle assay
 """
 
 from __future__ import division
-import numpy
+import numpy as np
 import os
 import pandas
 import sklearn
@@ -11,7 +11,7 @@ import sys
 from sklearn.naive_bayes import GaussianNB
 from sklearn import model_selection
 from sklearn.metrics import confusion_matrix
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.feature_selection import RFECV
@@ -92,20 +92,24 @@ data = selector.fit_transform(data)
 # feature scaling (normalize features to mean 0 and std 1, i.e. Z-score normalization)
 data = preprocessing.scale(data, axis=0)
 
-#remove highly correlated features
-#skip this for now
+# revert back to pandas data frame
+data = pandas.DataFrame(data)
+data.columns = all_features_names
 
-### The plot function ###
+# remove highly correlated features
+# skip this for now
+
+### plot function ###
 def plot(classifier_name, cm_diag):
     bar_labels = ['Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5']
-    y_pos = numpy.arange(len(bar_labels))
+    y_pos = np.arange(len(bar_labels))
 
     plt.bar(y_pos,
         cm_diag,
         align='center',
         color='blue')
 
-    plt.ylabel('Percent of cells correctly classifed')
+    plt.ylabel('Prediction rate in percent')
     plt.xticks(y_pos, bar_labels)
     plt.title('Cell Classes, ' + classifier_name)
     plt_name = classifier_name + '_plt.png'
@@ -114,52 +118,48 @@ def plot(classifier_name, cm_diag):
 
 #%% Machine Learning ###
 names_classifiers = []
-#names_classifiers.append(('RandomForest', RandomForestClassifier()))
+
 names_classifiers.append(('NaiveBayes', GaussianNB()))
+names_classifiers.append(('RandomForest', RandomForestClassifier()))
+
+# GradientBoosting takes longer to run, if you want to quickly try out this machine learning script, use NaiveBayes
+# names_classifiers.append(('GradientBoosting', GradientBoostingClassifier()))
 
 for name, classifier in names_classifiers:
+    print("Begin classification with %s\n" %name)
+    
     #cross validation
     y_pred = sklearn.model_selection.cross_val_predict(classifier, data, ground_truth, cv=10)
-    cm = confusion_matrix(ground_truth, y_pred, labels = [1,2,3,4,5])
+    cm = confusion_matrix(ground_truth, y_pred, labels = use_classes)
     
     #normalize confusion matrix
     row_sums = cm.sum(axis=1)
-    normalized_cm = cm / row_sums[:, numpy.newaxis]
-    numpy.set_printoptions(precision=3, suppress=True)
+    normalized_cm = cm / row_sums[:, np.newaxis] *100
+    np.set_printoptions(precision=1, suppress=True)
     cm_diag = normalized_cm.diagonal()
     cm_file_name = name + '_cm.txt'
     cm_file = open(os.path.join(output_directory, cm_file_name), 'w+')
-    cm_file.write(str(normalized_cm))
+    cm_file.write(str(normalized_cm)) # only works properly under python 3.x, not under 2.x
     cm_file.close()
-    #print(normalized_cm)
     plot(name, cm_diag)
-
-
-#%% Feature selection ###
-names_classifiers = []
-names_classifiers.append(('RandomForest', RandomForestClassifier()))
-
-for name, classifier in names_classifiers:
-    selector = RFECV(classifier, step=20, cv=10)
-    selector = selector.fit(data, ground_truth)
-    y_pred = selector.predict(data)
-    cm = confusion_matrix(ground_truth, y_pred, labels = [1,2,3,4,5])
-    
-    #normalize confusion matrix
-    row_sums = cm.sum(axis=1)
-    normalized_cm = cm / row_sums[:, numpy.newaxis]
-    numpy.set_printoptions(precision=3, suppress=True)
-    cm_diag = normalized_cm.diagonal()
-    
-    selected_features_indices = selector.get_support(True)
-    selected_features = []
-    for i in selected_features_indices:
-        selected_features.append(all_features_names[i])
-    
-    output_file_name = name + '.txt'
-    output_file = open(os.path.join(output_directory, output_file_name), 'w+')
-    output_file.write(str(selected_features))
-    output_file.write("\n\n")
-    output_file.write(str(normalized_cm))
-    output_file.close()
-    plot(name, cm_diag)
+        
+    # list most important features
+    if (name == 'RandomForest') or (name == 'GradientBoosting'):
+        print("Extracting most important features with %s\n" %name)
+        
+        # calculate feature importance
+        classifier.fit(data, ground_truth)
+        feature_importance = classifier.feature_importances_
+        
+        # feature importance in percent
+        feature_importance = 100.0 * (feature_importance / feature_importance.max()) 
+        
+        # sort features (from high to low importance)
+        sorted_idx = np.argsort(-feature_importance)
+   
+        # write TOP 20 most important features to file
+        with open(os.path.join(output_directory, 'feature_selection.txt'), 'a') as file:
+            file.write('\n *** Feature importance from %s in percent *** \n' % name)
+            for k in np.arange(0,20):
+                file.write("%s.  %s, %s\n" % (k+1, data.columns[sorted_idx[k]], feature_importance[sorted_idx[k]]))
+            file.close()
