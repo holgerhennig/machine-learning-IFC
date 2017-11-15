@@ -12,6 +12,7 @@ from sklearn.metrics import confusion_matrix
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.feature_selection import VarianceThreshold
 import matplotlib.pyplot as plt
+from sklearn import preprocessing
 
 working_directory = '/Users/holgerh/Dropbox/holger/work/Academia/presenting/dissemination_workshops/machine-learning-IFC_tutorial/examples/cell_cycle'
 os.chdir(working_directory)
@@ -20,6 +21,7 @@ output_directory = "Step4_ML_output/"
 
 #class_names = {'Anaphase','G1','G2','Metaphase','Prophase','S','Telophase'};
 #class_labs  = [    4,       1,   1,      3,         2,      1,      5     ];
+use_classes = [1,2,3,4,5]
 
 brightfield_filename = 'BF_cells_on_grid.txt';
 darkfield_filename  = 'SSC.txt';
